@@ -10,7 +10,7 @@ type TIngredientsState = {
 
 const initialState: TIngredientsState = {
   ingredients: [],
-  isIngredientsLoading: false,
+  isIngredientsLoading: true,
   error: null
 };
 

@@ -19,7 +19,8 @@ import { useDispatch, useSelector } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { useEffect } from 'react';
 import { checkUserAuth } from '../../services/slices/userSlice';
-
+import { OrderModal } from '../order-modal';
+console.log('APP');
 const App = () => {
   const dispatch = useDispatch();
   const { isIngredientsLoading } = useSelector((state) => state.ingredients);
@@ -31,7 +32,7 @@ const App = () => {
   const navigate = useNavigate();
 
   if (!isAuthChecked || isIngredientsLoading) {
-    return null;
+    return <Preloader />;
   }
 
   return (
@@ -43,7 +44,7 @@ const App = () => {
           <Route
             path='feed/:number'
             element={
-              <Modal title='' onClose={() => navigate('/feed')}>
+              <Modal title='' onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
@@ -51,7 +52,7 @@ const App = () => {
           <Route
             path='ingredients/:id'
             element={
-              <Modal title='Детали ингридиента' onClose={() => navigate('/')}>
+              <Modal title='Детали ингридиента' onClose={() => navigate(-1)}>
                 <IngredientDetails />
               </Modal>
             }
@@ -68,32 +69,13 @@ const App = () => {
             <Route path='profile/orders' element={<ProfileOrders />} />
             <Route
               path='profile/orders/:number'
-              element={
-                <Modal title='' onClose={() => navigate('/profile/orders')}>
-                  <OrderInfo />
-                </Modal>
-              }
+              element={<OrderModal onClose={() => navigate(-1)} />}
             />
           </Route>
           <Route path='*' element={<NotFound404 />} />
         </Route>
       </Routes>
     </>
-    //     {isIngredientsLoading ? (
-    //       <Preloader />
-    //     ) : error ? (
-    //       <div className={`${styles.error} text text_type_main-medium pt-4`}>
-    //         {error}
-    //       </div>
-    //     ) : ingredients.length > 0 ? (
-    //       <ConstructorPage />
-    //     ) : (
-    //       <div className={`${styles.title} text text_type_main-medium pt-4`}>
-    //         Нет игредиентов
-    //       </div>
-    //     )}
-    //   </div>
-    // </>
   );
 };
 
