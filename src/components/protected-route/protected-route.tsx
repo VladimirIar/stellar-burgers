@@ -1,12 +1,12 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import path from 'path';
+import { selectUser } from '@selectors';
 type Props = {
   onlyUnAuth?: boolean;
 };
 
 export const ProtectedRoute = ({ onlyUnAuth = false }: Props) => {
-  const { user } = useSelector((state) => state.user);
+  const user = useSelector(selectUser);
   const isAuth = !!user;
   const location = useLocation();
 

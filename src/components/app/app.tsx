@@ -20,11 +20,14 @@ import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { useEffect } from 'react';
 import { checkUserAuth } from '../../services/slices/userSlice';
 import { TitledModal } from '../titled-modal';
+import { selectIsIngredientsLoading, selectIsAuthChecked } from '@selectors';
 console.log('APP');
 const App = () => {
   const dispatch = useDispatch();
-  const { isIngredientsLoading } = useSelector((state) => state.ingredients);
-  const { isAuthChecked } = useSelector((state) => state.user);
+
+  const isIngredientsLoading = useSelector(selectIsIngredientsLoading);
+  const isAuthChecked = useSelector(selectIsAuthChecked);
+
   const location = useLocation();
   const background = location.state?.background;
   useEffect(() => {
@@ -53,11 +56,11 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path='profile' element={<Profile />} />
           <Route path='profile/orders' element={<ProfileOrders />} />
+          <Route path='profile/orders/:number' element={<OrderInfo />} />
         </Route>
 
         <Route path='feed/:number' element={<OrderInfo />} />
         <Route path='ingredients/:id' element={<IngredientDetails />} />
-        <Route path='profile/orders/:number' element={<OrderInfo />} />
 
         <Route path='*' element={<NotFound404 />} />
       </Routes>
@@ -76,10 +79,12 @@ const App = () => {
               </Modal>
             }
           />
-          <Route
-            path='profile/orders/:number'
-            element={<TitledModal onClose={() => navigate(-1)} />}
-          />
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path='profile/orders/:number'
+              element={<TitledModal onClose={() => navigate(-1)} />}
+            />
+          </Route>
         </Routes>
       )}
     </div>

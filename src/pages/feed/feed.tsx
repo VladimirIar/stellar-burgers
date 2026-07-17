@@ -4,11 +4,12 @@ import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchFeeds } from '../../services/slices/feedSlice';
+import { selectFeedIsLoading, selectFeedOrders } from '@selectors';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
-  const { orders, isLoading } = useSelector((state) => state.feed);
-
+  const isLoading = useSelector(selectFeedIsLoading);
+  const orders: TOrder[] = useSelector(selectFeedOrders);
   useEffect(() => {
     dispatch(fetchFeeds());
   }, []);
