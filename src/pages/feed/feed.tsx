@@ -12,7 +12,9 @@ export const Feed: FC = () => {
   useEffect(() => {
     dispatch(fetchFeeds());
   }, []);
-
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
     <FeedUI orders={orders} handleGetFeeds={() => dispatch(fetchFeeds())} />
   );
