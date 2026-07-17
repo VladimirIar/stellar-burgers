@@ -6,17 +6,13 @@ import { loginUser } from '../../services/slices/userSlice';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const error = useSelector((state) => state.user.error);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }))
-      .unwrap()
-      .then(() => navigate('/'))
-      .catch(() => {});
+    dispatch(loginUser({ email, password })).unwrap();
   };
 
   return (

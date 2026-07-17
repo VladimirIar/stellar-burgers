@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from '../../services/store';
+import path from 'path';
 type Props = {
   onlyUnAuth?: boolean;
 };
@@ -7,12 +8,14 @@ type Props = {
 export const ProtectedRoute = ({ onlyUnAuth = false }: Props) => {
   const { user } = useSelector((state) => state.user);
   const isAuth = !!user;
+  const location = useLocation();
 
   if (onlyUnAuth && isAuth) {
-    return <Navigate to='/' replace />;
+    const from = location.state?.from || { pathname: '/' };
+    return <Navigate to={from} replace />;
   }
   if (!onlyUnAuth && !isAuth) {
-    return <Navigate to='/login' replace />;
+    return <Navigate to='/login' replace state={{ from: location }} />;
   }
   return <Outlet />;
 };

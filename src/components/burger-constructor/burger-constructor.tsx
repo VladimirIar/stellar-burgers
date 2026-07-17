@@ -24,11 +24,15 @@ export const BurgerConstructor: FC = () => {
       ...constructorItems.ingredients.map((i) => i._id),
       constructorItems.bun._id
     ];
-    dispatch(createOrder(ingredients));
+    dispatch(createOrder(ingredients))
+      .unwrap()
+      .then((result) => {
+        dispatch(clearConstructor());
+      })
+      .catch((error) => console.error('Ошибка при создании заказа: ', error));
   };
   const closeOrderModal = () => {
     dispatch(clearOrder());
-    dispatch(clearConstructor());
   };
 
   const price = useMemo(
