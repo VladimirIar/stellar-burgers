@@ -28,7 +28,16 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(updateUser(formValue));
+    if (formValue.password.length == 0 || formValue.password.length >= 5)
+      dispatch(updateUser(formValue))
+        .unwrap()
+        .then(() => {
+          setFormValue((prevState) => ({
+            ...prevState,
+            password: ''
+          }));
+        })
+        .catch(() => {});
   };
 
   const handleCancel = (e: SyntheticEvent) => {
