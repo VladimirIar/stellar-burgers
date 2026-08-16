@@ -6,6 +6,10 @@
 import type {Config} from 'jest';
 
 const config: Config = {
+  moduleNameMapper: {
+    '^@api$': '<rootDir>/src/utils/burger-api',
+    '^src/(.*)$': '<rootDir>/src/$1'
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
