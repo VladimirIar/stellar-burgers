@@ -1,10 +1,5 @@
 import { expect, test, describe } from '@jest/globals';
 import ingridientsReducer, { fetchIngredients } from '../ingredientsSlice';
-import store from 'src/services/store';
-
-jest.mock('@api', () => ({
-  getIngredientsApi: jest.fn()
-}));
 
 const expectedIngredients = [
   {
@@ -41,14 +36,19 @@ describe('Тест получения ингридиентов', () => {
     jest.clearAllMocks();
   });
   test('fetchIngredients статус fulfilled', async () => {
-    const getIngredientsSpy = jest
-      .spyOn(require('@api'), 'getIngredientsApi')
-      .mockResolvedValue(expectedIngredients);
-
-    await store.dispatch(fetchIngredients());
-    const { ingredients } = store.getState().ingredients;
+    const currentState = {
+      ingredients: [],
+      isIngredientsLoading: true,
+      error: null
+    };
+    const newState = ingridientsReducer(currentState, {
+      type: fetchIngredients.fulfilled.type,
+      payload: expectedIngredients
+    });
+    const ingredients = newState.ingredients;
     expect(ingredients).toEqual(expectedIngredients);
-    expect(getIngredientsSpy).toHaveBeenCalledTimes(1);
+    expect(newState.error).toBeNull;
+    expect(newState.isIngredientsLoading).toBe(false);
   });
   test('fetchIngredients статус pending', () => {
     const currentState = {

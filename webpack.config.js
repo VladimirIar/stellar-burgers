@@ -92,8 +92,6 @@ module.exports = {
     historyApiFallback: true,
     port: 4000,
     open: true,
-    client: {
-      overlay: false
-    }
+
   }
 };
